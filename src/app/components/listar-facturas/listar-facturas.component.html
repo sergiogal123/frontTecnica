@@ -1,0 +1,99 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    <span class="titulo">LISTADO DE FACTURAS</span>
+                    <button class="btn btn-success float-end" (click)="open(content)">NUEVO</button>
+                    <button class="btn btn-secondary float-start" routerLink="/crear-Factura" >PRODUCTOS</button>
+                    <table class="table table-striped mt-3">
+                        <thead>
+                          <tr>
+                            <th scope="col">NumeroFactura</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">NombreCliente</th>
+                            <th scope="col">Total</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let factura of listFactura ">
+                            <td>{{ factura.NumeroFactura}}</td>
+                            <td>{{ factura.Fecha}}</td>
+                            <td>{{ factura.NombreCliente}}</td>
+                            <td>{{ factura.Total}}</td>
+                            <td>                                 
+                                <i class="fas fa-edit text-primary"></i>
+                                <i (click)="eliminarFactura(factura.IdFactura)" class="fas fa-trash text-danger"></i>
+                            </td>
+                          </tr>                                                    
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div >
+
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Nueva Factura</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="agregarfactura()" [formGroup]="facturaForm">         
+        <table>
+          <tr>
+            <th>
+              <div class="mt-3">
+                <input type="text" formControlName="NumeroFactura" class="form-control form-control-lg" placeholder="Numero de Factura" >
+            </div>
+            </th>
+            <th>
+              <div class="mt-3">
+                <input type="text" formControlName="TipodePago" class="form-control form-control-lg" placeholder="Tipo de pago" >
+            </div>
+            </th>
+           </tr> 
+           <tr>
+            <th>
+              <div class="mt-3">
+              <input type="text" formControlName="DocumentoCliente" class="form-control form-control-lg" placeholder="Cedula Cliente" >
+            </div>
+            </th>
+            <th>
+              <div class="mt-3">
+                <input type="text" formControlName="NombreCliente" class="form-control form-control-lg" placeholder="Nombre cliente" >
+              </div>              
+            </th>
+          </tr>
+        </table>
+        <div class="form-row mt-2" *ngFor="let obj of dataarray; let i=index">
+          <div class="form-group col-md-1 float-end mt-2">
+            <span (click)="removeForm(i)" class="btn btn-danger">-</span>
+          </div>
+          <div class="form-group float-end col-md-4 mt-2">
+            <input type="number" formControlName="Items.valorunitario" class="form-control" name="valorunitario{{i}}" placeholder="Valor Unitario" [(ngModel)]="obj.valorunitario">
+          </div>
+          <div class="form-group float-end col-md-4 mt-2">
+            <input type="number" formControlName="Items.cantidad" class="form-control" name="cantidad{{i}}" placeholder="Cantidad" [(ngModel)]="obj.cantidad" >
+          </div>
+          <div class="form-group float-start col-md-3 mt-2">
+            <input type="text" formControlName="Items.idproducto" class="form-control" name="idproducto{{i}}" placeholder="Id Producto" [(ngModel)]="obj.idproducto" >
+          </div>
+                             
+        </div>
+        <span (click)="addForm()" class="btn btn-success">+</span>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+  </ng-template>
